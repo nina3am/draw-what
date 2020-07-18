@@ -1,9 +1,14 @@
 class DrawingCanvas {
-    constructor(name, img, time, errorsLeft, points) {
+    constructor(name, emoji, img, imgBackground, frontImg, time, errorsLeft, points) {
         // chaque dessin à une image correspondante qui sera revelée à la fin / à passer en paramètre dans le constructor ?
         this.name = name;
+        this.emoji = emoji;
         this.img = new Image();
         this.img.src = img;
+        this.background = new Image();
+        this.background.src = imgBackground;
+        this.frontImg = new Image();
+        this.frontImg.src = frontImg;
         // this.time = temps défini pour résoudre le dessin
         this.time = time;
         // this.errorLeft = nombre d'erreurs possibles pour ce dessin
@@ -18,8 +23,9 @@ class DrawingCanvas {
             ctx.beginPath();
             ctx.arc(element.x, element.y, 3, 0, Math.PI * 2);
             ctx.fill();
-            ctx.font = "18px Arial";
-            ctx.fillText(`${index + 1}`, element.x + 5, element.y + 5);
+            ctx.font = "15px Roboto";
+            ctx.fillStyle = "#3e3e3e";
+            ctx.fillText(`${index + 1}`, element.x + 2, element.y - 5);
         });
 
         // Un dessin est constitué d'un ensemble de points --> envoyé sous forme d'objet ou de tableau en paramètre ?
@@ -28,15 +34,22 @@ class DrawingCanvas {
     gameOver() {
         // on définie une fonction qui permettra d'afficher le message de Gameover si le joueur a fait trop d'erreurs
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = "30px Arial";
-        ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 2);
+        ctx.font = "30px Shadows Into Light";
+        ctx.fillText(`Game Over`, (canvas.width / 2), canvas.height / 2);
         stopTimer();
     }
     winner() {
         // on définie une fonction qui permettra d'afficher l'image associé pour révéler le dessin quand tous les points sont rattachés.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(this.img, 0, 0)
-        gameIntroText.innerHTML = "Congratulations, you find the " + this.name;
+        ctx.drawImage(this.background, 0, 0);
+        ctx.drawImage(this.img, 0, 0);
+        ctx.drawImage(this.frontImg, 0, 0);
+        gameIntroText.innerHTML = "Congratulations, you find the " + this.name + this.emoji;
+        var audio = new Audio('/sons/0879.mp3');
+        audio.play();
+        setTimeout(function () {
+            audio.stop();
+        }, 3000);
         stopTimer();
     }
 }

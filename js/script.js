@@ -10,7 +10,10 @@ let int;
 
 const drawings = {
   name: "girafe",
+  emoji: "🦒",
   img: "/images/girafe.png",
+  imgBackground: "/images/fond-arriere.png",
+  frontImg: "/images/fond-avant.png",
   time: 60,
   errorsLeft: 3,
   points: [{
@@ -194,7 +197,10 @@ if (startButton) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     draw = new DrawingCanvas(
       drawings.name,
+      drawings.emoji,
       drawings.img,
+      drawings.imgBackground,
+      drawings.frontImg,
       drawings.time,
       drawings.errorsLeft,
       drawings.points
@@ -203,7 +209,7 @@ if (startButton) {
     printTimer();
     checkTimer();
     displaynumberErrors(draw.errorsLeft);
-    gameIntroText.innerHTML = "First step : Find the number 1";
+    gameIntroText.innerHTML = "First step : find the number 1";
   });
 }
 
@@ -235,10 +241,9 @@ canvas.addEventListener("click", (event) => {
       if (element.x === array[0].x && element.y === array[0].y) {
         console.log("first element");
         followingNumberPoint++;
-        gameIntroText.innerHTML = "Next steps : Find the number 2";
+        gameIntroText.innerHTML = "Next step : Find the number 2";
         // lorsque j'arrive au dernier point alors c'est gagné et j'affiche mon dessin
         // TODO : gérer la fermeture de ma forme -> clic sur le 1 ? ou fillForm ?
-        // TODO : remplacer 7 par array.length
       } else if (currentNumberPoint === 7) {
         console.log("last element");
         draw.winner();
@@ -277,7 +282,7 @@ function drawLines(xFrom, yFrom, xTo, yTo) {
 function showErrorsLeft(errors) {
   if (errors != 0) {
     ctx.clearRect(0, 0, 300, 40);
-    ctx.font = "18px Arial";
+    ctx.font = "20px Roboto";
     ctx.fillText(`${errors} errors left`, 10, 30);
   } else {
     draw.gameOver();
@@ -286,7 +291,7 @@ function showErrorsLeft(errors) {
 
 function displaynumberErrors(errors) {
   ctx.clearRect(0, 0, 300, 40);
-  ctx.font = "18px Arial";
+  ctx.font = "20px Roboto";
   ctx.fillText(`${errors} errors left`, 10, 30);
 }
 
@@ -294,9 +299,9 @@ function printTimer() {
   int = setInterval(() => {
     draw.time--;
     //console.log(draw.time);
-    ctx.clearRect((canvas.width - 200), 0, 300, 40);
-    ctx.font = "18px Arial";
-    ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 200), 30);
+    ctx.clearRect((canvas.width - 250), 0, 300, 40);
+    ctx.font = "20px Roboto";
+    ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 250), 30);
   }, 1000);
 }
 

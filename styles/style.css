@@ -6,9 +6,10 @@ body {
 body {
   display: flex;
   min-height: 100vh;
+  background-color: bisque;
 }
 
-body>div {
+body > div {
   flex: 1;
 }
 
@@ -19,23 +20,38 @@ body>div {
   align-items: center;
 }
 
+.game-intro p {
+  font-family: "Shadows Into Light", cursive;
+  font-size: 25px;
+  text-align: center;
+  color: #3e3e3e;
+}
+
 .logo-img {
-  width: 350px;
+  width: 45%;
 }
 
-.arrows-img {
-  width: 150px;
-}
-
-body button {
-  font-size: 30px;
-  background-color: black;
+/* body button {
+  font-family: "Shadows Into Light", cursive;
+  font-size: 20px;
+  background-color: #3e3e3e;
   color: #fff;
-  padding: 20px 40px;
+  padding: 20px 30px;
   border: 0;
   border-radius: 5px;
   margin-bottom: 20px;
+  transition-duration: 0.4s;
 }
+
+button:hover {
+  background-color: #f8967a;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+button:focus {
+  outline: none;
+} */
 
 #game-board {
   padding: 20px 0px;
@@ -43,10 +59,77 @@ body button {
 
 #game-board {
   position: relative;
+  cursor: url("https://images.emojiterra.com/mozilla/512px/270f.png"), auto;
+  /*cursor: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/9632/meh.png"), auto;*/
 }
 
 #game-board canvas {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+.container {
+  transform: translate(-50%, -50%);
+  width : 16%;
+  margin-top:43px;
+
+}
+
+.btn {
+  margin-top: 25px
+  position : relative;
+  display : inline-block;
+  width : 248px;
+  height: 50px;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 60px;
+  text-align: center;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.btn svg rect {
+  stroke-width: 4;
+  stroke-dasharray: 353, 0;
+  stroke-dashoffset: 0;
+  /* -webkit-transition: all 600ms ease; */
+  transition: all 600ms ease;
+}
+
+.btn span {
+  font-family: "Roboto";
+  font-size: 20px;
+  background: -moz-linear-gradient(
+    left,
+    #f9942a 0%,
+    #f36d7c 100%
+  );
+  background: -webkit-linear-gradient(
+    left,
+    #f9942a 0%,
+    #f36d7c 100%
+  );
+  background: linear-gradient(
+    to right,
+    #f9942a 0%,
+    #f36d7c 100%
+  ); 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff8282', endColorstr='#e178ed',GradientType=1 );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn:hover svg rect {
+  stroke-width: 4;
+  stroke-dasharray: 196, 543;
+  stroke-dashoffset: 437;
 }
