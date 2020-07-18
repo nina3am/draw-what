@@ -5,7 +5,8 @@ let currentPoint;
 let currentNumberPoint;
 let followingNumberPoint = 1;
 let previousNumberPoint;
-let gameIntroText = document.querySelector(".game-intro p");
+let gameIntroText = document.querySelector("#instructions");
+let goodToKnow = document.querySelector("#goodtoknow");
 let int;
 
 const drawings = {

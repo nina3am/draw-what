@@ -1,5 +1,14 @@
 class DrawingCanvas {
-    constructor(name, emoji, img, imgBackground, frontImg, time, errorsLeft, points) {
+    constructor(
+        name,
+        emoji,
+        img,
+        imgBackground,
+        frontImg,
+        time,
+        errorsLeft,
+        points
+    ) {
         // chaque dessin à une image correspondante qui sera revelée à la fin / à passer en paramètre dans le constructor ?
         this.name = name;
         this.emoji = emoji;
@@ -35,7 +44,7 @@ class DrawingCanvas {
         // on définie une fonction qui permettra d'afficher le message de Gameover si le joueur a fait trop d'erreurs
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "30px Shadows Into Light";
-        ctx.fillText(`Game Over`, (canvas.width / 2), canvas.height / 2);
+        ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 2);
         stopTimer();
     }
     winner() {
@@ -44,11 +53,13 @@ class DrawingCanvas {
         ctx.drawImage(this.background, 0, 0);
         ctx.drawImage(this.img, 0, 0);
         ctx.drawImage(this.frontImg, 0, 0);
-        gameIntroText.innerHTML = "Congratulations, you find the " + this.name + this.emoji;
-        var audio = new Audio('/sons/0879.mp3');
+        gameIntroText.innerHTML =
+            "Congratulations, you found the " + this.name + this.emoji;
+        var audio = new Audio("/sons/0879.mp3");
+        goodToKnow.innerHTML = "💡Did you know the girafe doesn't make any sound ? - <a href=\"https://www.maxisciences.com/girafe/a-quoi-ressemble-le-cri-de-la-girafe-des-scientifiques-ont-trouve-la-reponse_art35980.html\"> <br> See more here<a> "
         audio.play();
         setTimeout(function () {
-            audio.stop();
+            audio.pause();
         }, 3000);
         stopTimer();
     }
