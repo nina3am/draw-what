@@ -1,6 +1,7 @@
 class DrawingCanvas {
-    constructor(img, time, errorsLeft, points) {
+    constructor(name, img, time, errorsLeft, points) {
         // chaque dessin à une image correspondante qui sera revelée à la fin / à passer en paramètre dans le constructor ?
+        this.name = name;
         this.img = new Image();
         this.img.src = img;
         // this.time = temps défini pour résoudre le dessin
@@ -25,17 +26,17 @@ class DrawingCanvas {
         // lors du lancement du jeu, on place les points avec leur numéro (index) sur le canvas
     }
     gameOver() {
-        // on définie une fonction qui permettra d'afficher le message de Gameover si le dessin n'est pas finalisé dans le temps imparti
-        //ou si le joueur a fait trop d'erreurs
-        if (this.errorsLeft === 0) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.font = "30px Arial";
-            ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 2);
-        }
+        // on définie une fonction qui permettra d'afficher le message de Gameover si le joueur a fait trop d'erreurs
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "30px Arial";
+        ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 2);
+        stopTimer();
     }
     winner() {
         // on définie une fonction qui permettra d'afficher l'image associé pour révéler le dessin quand tous les points sont rattachés.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(this.img, 0, 0)
+        gameIntroText.innerHTML = "Congratulations, you find the " + this.name;
+        stopTimer();
     }
 }

@@ -1,15 +1,17 @@
 const $canvas = document.getElementById("game-board");
 const ctx = canvas.getContext("2d");
+let draw;
 let currentPoint;
 let currentNumberPoint;
 let followingNumberPoint = 1;
 let previousNumberPoint;
-let gameIntroText = document.querySelector('.game-intro p')
+let gameIntroText = document.querySelector(".game-intro p");
+let int;
 
 const drawings = {
   name: "girafe",
   img: "/images/girafe.png",
-  time: 30,
+  time: 60,
   errorsLeft: 3,
   points: [{
       x: 268,
@@ -184,19 +186,23 @@ const drawings = {
 //         errorsLeft : 3,
 //     }
 
-let draw;
+
 // création du board de dessin
 const startButton = document.getElementById("start-button");
 if (startButton) {
   startButton.addEventListener("click", (event) => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     draw = new DrawingCanvas(
+      drawings.name,
       drawings.img,
       drawings.time,
       drawings.errorsLeft,
       drawings.points
     ); // girafe
     draw.drawPoints(drawings.points);
+    printTimer();
+    checkTimer();
+    displaynumberErrors(draw.errorsLeft);
     gameIntroText.innerHTML = "First step : Find the number 1";
   });
 }
@@ -225,19 +231,19 @@ canvas.addEventListener("click", (event) => {
       console.log("coordinate ok");
       currentNumberPoint = index + 1;
       previousNumberPoint = index - 1;
-      console.log(index + 1);
-      console.log(array.length);
-      // console.log("current point number" + currentNumberPoint);
-      // console.log("previous point number" + previousNumberPoint);
-      // si le numéro du point cliqué correspond aux numéros suivants à trouver alors on trace la ligne
+      // si le numéro est le premier alors on affiche l'instruction mais aucun trait ne se dessine
       if (element.x === array[0].x && element.y === array[0].y) {
         console.log("first element");
         followingNumberPoint++;
         gameIntroText.innerHTML = "Next steps : Find the number 2";
-        // TODO remplacer 2 par array.length
-      } else if (currentNumberPoint === 2) {
+        // lorsque j'arrive au dernier point alors c'est gagné et j'affiche mon dessin
+        // TODO : gérer la fermeture de ma forme -> clic sur le 1 ? ou fillForm ?
+        // TODO : remplacer 7 par array.length
+      } else if (currentNumberPoint === 7) {
         console.log("last element");
         draw.winner();
+
+        // si le numéro du point cliqué correspond aux numéros suivants à trouver alors on trace la ligne
       } else if (followingNumberPoint === currentNumberPoint) {
         followingNumberPoint++;
         console.log("now find number " + followingNumberPoint);
@@ -250,7 +256,7 @@ canvas.addEventListener("click", (event) => {
         //sinon décrémenter le compteur d 'erreurs et mettre à jour l'affichage
       } else {
         draw.errorsLeft--;
-        console.log("errors left " + draw.errorsLeft);
+        //console.log("errors left " + draw.errorsLeft);
         showErrorsLeft(draw.errorsLeft);
       }
     }
@@ -269,11 +275,40 @@ function drawLines(xFrom, yFrom, xTo, yTo) {
 }
 
 function showErrorsLeft(errors) {
-  if (errors === 0) {
-    draw.gameOver()
+  if (errors != 0) {
+    ctx.clearRect(0, 0, 300, 40);
+    ctx.font = "18px Arial";
+    ctx.fillText(`${errors} errors left`, 10, 30);
   } else {
-    ctx.clearRect(0, 0, 300, 33);
-    ctx.font = "30px Arial";
-    ctx.fillText(`${errors} errors left`, 30, 30);
+    draw.gameOver();
   }
+}
+
+function displaynumberErrors(errors) {
+  ctx.clearRect(0, 0, 300, 40);
+  ctx.font = "18px Arial";
+  ctx.fillText(`${errors} errors left`, 10, 30);
+}
+
+function printTimer() {
+  int = setInterval(() => {
+    draw.time--;
+    //console.log(draw.time);
+    ctx.clearRect((canvas.width - 200), 0, 300, 40);
+    ctx.font = "18px Arial";
+    ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 200), 30);
+  }, 1000);
+}
+
+function checkTimer() {
+  setInterval(() => {
+    if (draw.time === 0) {
+      draw.gameOver();
+      stopTimer();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(int);
 }
