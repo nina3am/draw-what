@@ -27,8 +27,15 @@ class DrawingCanvas {
     gameOver() {
         // on définie une fonction qui permettra d'afficher le message de Gameover si le dessin n'est pas finalisé dans le temps imparti
         //ou si le joueur a fait trop d'erreurs
+        if (this.errorsLeft === 0) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "30px Arial";
+            ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 2);
+        }
     }
     winner() {
-        // on définie une fonction qui permettra d'afficher l'image associé pour révéler le dessin quand tous les points sont rattachés
+        // on définie une fonction qui permettra d'afficher l'image associé pour révéler le dessin quand tous les points sont rattachés.
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this.img, 0, 0)
     }
 }

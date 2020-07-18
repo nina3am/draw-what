@@ -3,14 +3,15 @@ const ctx = canvas.getContext("2d");
 let currentPoint;
 let currentNumberPoint;
 let followingNumberPoint = 1;
+let previousNumberPoint;
+let gameIntroText = document.querySelector('.game-intro p')
 
 const drawings = {
   name: "girafe",
   img: "/images/girafe.png",
   time: 30,
   errorsLeft: 3,
-  points: [
-    {
+  points: [{
       x: 268,
       y: 333,
     },
@@ -188,6 +189,7 @@ let draw;
 const startButton = document.getElementById("start-button");
 if (startButton) {
   startButton.addEventListener("click", (event) => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     draw = new DrawingCanvas(
       drawings.img,
       drawings.time,
@@ -195,6 +197,7 @@ if (startButton) {
       drawings.points
     ); // girafe
     draw.drawPoints(drawings.points);
+    gameIntroText.innerHTML = "First step : Find the number 1";
   });
 }
 
@@ -221,25 +224,35 @@ canvas.addEventListener("click", (event) => {
     ) {
       console.log("coordinate ok");
       currentNumberPoint = index + 1;
-      console.log("current point number" + currentNumberPoint);
+      previousNumberPoint = index - 1;
+      console.log(index + 1);
+      console.log(array.length);
+      // console.log("current point number" + currentNumberPoint);
+      // console.log("previous point number" + previousNumberPoint);
       // si le numéro du point cliqué correspond aux numéros suivants à trouver alors on trace la ligne
-      if (followingNumberPoint === currentNumberPoint) {
+      if (element.x === array[0].x && element.y === array[0].y) {
+        console.log("first element");
+        followingNumberPoint++;
+        gameIntroText.innerHTML = "Next steps : Find the number 2";
+        // TODO remplacer 2 par array.length
+      } else if (currentNumberPoint === 2) {
+        console.log("last element");
+        draw.winner();
+      } else if (followingNumberPoint === currentNumberPoint) {
         followingNumberPoint++;
         console.log("now find number " + followingNumberPoint);
         drawLines(
           element.x,
           element.y,
-          array[currentNumberPoint].x,
-          array[currentNumberPoint].y
+          array[previousNumberPoint].x,
+          array[previousNumberPoint].y
         );
-        // sinon décrémenter le compteur d'erreurs et mettre à jour l'affichage
+        //sinon décrémenter le compteur d 'erreurs et mettre à jour l'affichage
       } else {
         draw.errorsLeft--;
         console.log("errors left " + draw.errorsLeft);
         showErrorsLeft(draw.errorsLeft);
       }
-    } else {
-      console.log("coordinate wrong");
     }
   });
 });
@@ -256,7 +269,11 @@ function drawLines(xFrom, yFrom, xTo, yTo) {
 }
 
 function showErrorsLeft(errors) {
-  ctx.clearRect(0, 0, 300, 33);
-  ctx.font = "30px Arial";
-  ctx.fillText(`${errors} errors left`, 30, 30);
+  if (errors === 0) {
+    draw.gameOver()
+  } else {
+    ctx.clearRect(0, 0, 300, 33);
+    ctx.font = "30px Arial";
+    ctx.fillText(`${errors} errors left`, 30, 30);
+  }
 }
