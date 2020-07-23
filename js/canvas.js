@@ -7,7 +7,9 @@ class DrawingCanvas {
         frontImg,
         time,
         errorsLeft,
-        points
+        sound,
+        info,
+        points,
     ) {
         // chaque dessin à une image correspondante qui sera revelée à la fin / à passer en paramètre dans le constructor ?
         this.name = name;
@@ -21,6 +23,8 @@ class DrawingCanvas {
         // this.time = temps défini pour résoudre le dessin
         this.time = time;
         // this.errorLeft = nombre d'erreurs possibles pour ce dessin
+        this.info = info;
+        this.sound = sound;
         this.errorsLeft = errorsLeft;
         this.currentPoint = 0;
         this.points = points;
@@ -55,8 +59,8 @@ class DrawingCanvas {
         ctx.drawImage(this.frontImg, 0, 0);
         gameIntroText.innerHTML =
             "Congratulations, you found the " + this.name + this.emoji;
-        var audio = new Audio("/sons/0879.mp3");
-        goodToKnow.innerHTML = "💡Did you know the girafe doesn't make any sound ? - <a href=\"https://www.maxisciences.com/girafe/a-quoi-ressemble-le-cri-de-la-girafe-des-scientifiques-ont-trouve-la-reponse_art35980.html\"> <br> See more here<a> "
+        var audio = new Audio(this.sound);
+        goodToKnow.innerHTML = this.info;
         audio.play();
         setTimeout(function () {
             audio.pause();

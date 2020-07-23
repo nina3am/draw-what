@@ -9,6 +9,28 @@ let gameIntroText = document.querySelector("#instructions");
 let goodToKnow = document.querySelector("#goodtoknow");
 let int;
 
+// function setupCanvas(canvas) {
+//   // Get the device pixel ratio, falling back to 1.
+//   // var dpr = window.devicePixelRatio || 1;
+//   var dpr = 1;
+//   // Get the size of the canvas in CSS pixels.
+//   var rect = canvas.getBoundingClientRect();
+//   // Give the canvas pixel dimensions of their CSS
+//   // size * the device pixel ratio.
+//   canvas.width = rect.width * dpr;
+//   canvas.height = rect.height * dpr;
+//   // Scale all drawing operations by the dpr, so you
+//   // don't have to worry about the difference.
+//   context.scale(dpr, dpr);
+//   console.log(dpr)
+//   return context;
+// }
+
+// // Now this line will be the same size on the page
+// // but will look sharper on high-DPI devices!
+// const ctx = setupCanvas($canvas);
+
+
 const drawings = {
   name: "girafe",
   emoji: "🦒",
@@ -17,169 +39,167 @@ const drawings = {
   frontImg: "/images/fond-avant.png",
   time: 60,
   errorsLeft: 3,
+  sound: "/sons/0879.mp3",
+  info: "💡Did you know the girafe doesn't make any sound ? </br> <button id=\"btn-info\"><a href=\"https://www.maxisciences.com/girafe/a-quoi-ressemble-le-cri-de-la-girafe-des-scientifiques-ont-trouve-la-reponse_art35980.html\" target=\"_blank\">See more here<a> </button>",
   points: [{
-      x: 268,
-      y: 333,
+      x: 330, //1
+      y: 298,
     },
     {
-      x: 199,
-      y: 204,
+      x: 275, //2
+      y: 174,
     },
     {
-      x: 148,
-      y: 188,
+      x: 216, //3
+      y: 160,
     },
     {
-      x: 117,
-      y: 171,
-    },
-    {
-      x: 177,
-      y: 132,
-    },
-    {
-      x: 236,
-      y: 135,
-    },
-    {
-      x: 266,
-      y: 110,
-    },
-    {
-      x: 263,
-      y: 63,
-    },
-    {
-      x: 288,
-      y: 97,
-    },
-    {
-      x: 311,
-      y: 105,
-    },
-    {
-      x: 342,
-      y: 74,
-    },
-    {
-      x: 387,
-      y: 84,
-    },
-    {
-      x: 374,
-      y: 120,
-    },
-    {
-      x: 395,
-      y: 133,
-    },
-    {
-      x: 443,
-      y: 130,
-    },
-    {
-      x: 494,
+      x: 190, //4
       y: 151,
     },
     {
-      x: 514,
-      y: 177,
+      x: 243, //5
+      y: 106,
     },
     {
-      x: 482,
-      y: 186,
+      x: 301, //6
+      y: 110,
     },
     {
-      x: 423,
-      y: 170,
+      x: 330, //7
+      y: 85,
     },
     {
-      x: 436,
-      y: 234,
+      x: 326, //8
+      y: 42,
     },
     {
-      x: 416,
-      y: 286,
+      x: 349, //9
+      y: 74,
     },
     {
-      x: 356,
-      y: 335,
+      x: 370,
+      y: 82,
     },
     {
-      x: 363,
-      y: 427,
+      x: 405,
+      y: 86,
     },
     {
-      x: 373,
-      y: 477,
+      x: 399,
+      y: 51,
     },
     {
-      x: 406,
-      y: 493,
+      x: 444,
+      y: 61,
     },
     {
-      x: 462,
-      y: 565,
+      x: 430,
+      y: 94,
+    },
+    {
+      x: 496,
+      y: 104,
+    },
+    {
+      x: 545,
+      y: 126,
+    },
+    {
+      x: 561,
+      y: 150,
+    },
+    {
+      x: 531,
+      y: 160,
     },
     {
       x: 477,
-      y: 638,
+      y: 145,
+    },
+    {
+      x: 469,
+      y: 256,
+    },
+    {
+      x: 416,
+      y: 306,
+    },
+    {
+      x: 420,
+      y: 390,
+    },
+    {
+      x: 461,
+      y: 454,
+    },
+    {
+      x: 515,
+      y: 521,
+    },
+    {
+      x: 527,
+      y: 589,
+    },
+    {
+      x: 518,
+      y: 640,
+    },
+    {
+      x: 481,
+      y: 695,
     },
     {
       x: 468,
-      y: 686,
+      y: 713,
     },
     {
-      x: 428,
-      y: 745,
+      x: 472,
+      y: 748,
     },
     {
-      x: 414,
-      y: 763,
+      x: 402,
+      y: 751,
     },
     {
-      x: 419,
-      y: 801,
+      x: 385,
+      y: 737,
     },
     {
-      x: 345,
-      y: 806,
+      x: 363,
+      y: 740,
     },
     {
-      x: 324,
-      y: 791,
+      x: 335,
+      y: 752,
     },
     {
-      x: 304,
-      y: 793,
+      x: 278,
+      y: 746,
     },
     {
-      x: 271,
-      y: 804,
+      x: 284,
+      y: 709,
     },
     {
-      x: 209,
-      y: 798,
+      x: 233,
+      y: 641,
     },
     {
-      x: 218,
-      y: 759,
+      x: 231,
+      y: 740,
     },
     {
-      x: 163,
-      y: 687,
+      x: 238,
+      y: 519,
     },
     {
-      x: 169,
-      y: 562,
+      x: 319,
+      y: 438,
     },
     {
-      x: 256,
-      y: 480,
-    },
-    {
-      x: 266,
-      y: 391,
+      x: 330,
+      y: 355,
     },
   ],
 };
@@ -204,6 +224,8 @@ if (startButton) {
       drawings.frontImg,
       drawings.time,
       drawings.errorsLeft,
+      drawings.sound,
+      drawings.info,
       drawings.points
     ); // girafe
     draw.drawPoints(drawings.points);
@@ -300,9 +322,9 @@ function printTimer() {
   int = setInterval(() => {
     draw.time--;
     //console.log(draw.time);
-    ctx.clearRect((canvas.width - 250), 0, 300, 40);
+    ctx.clearRect((canvas.width - 220), 0, 300, 40);
     ctx.font = "20px Roboto";
-    ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 250), 30);
+    ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 220), 30);
   }, 1000);
 }
 
@@ -318,3 +340,48 @@ function checkTimer() {
 function stopTimer() {
   clearInterval(int);
 }
+
+// function biggerPoint(x, y) {
+//   ctx.beginPath();
+//   ctx.arc(x, y, 10, 0, Math.PI * 2);
+//   ctx.fill();
+// }
+
+// function clearBiggerPoint() {
+//   ctx.clearRect(0, 50, canvas.width, (canvas.height - 50));
+//   draw.drawPoints(drawings.points);
+// }
+
+// function getMousePos(canvas, evt) {
+//   var rect = canvas.getBoundingClientRect();
+//   return {
+//     x: evt.clientX - rect.left,
+//     y: evt.clientY - rect.top
+//   };
+// }
+
+// //TODO: draw line existante
+
+// canvas.addEventListener('mousemove', function (evt) {
+//   var mousePos = getMousePos(canvas, evt);
+//   // var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+//   let array = draw.points;
+//   array.forEach((element, index) => {
+//     if (
+//       element.x > mousePos.x - 20 &&
+//       element.y > mousePos.y - 20 &&
+//       element.x < mousePos.x + 20 &&
+//       element.y > mousePos.y - 20 &&
+//       element.x < mousePos.x + 20 &&
+//       element.y < mousePos.y + 20 &&
+//       element.x > mousePos.x - 20 &&
+//       element.y < mousePos.y + 20
+//     ) {
+//       // TODO : améliorer l'affichage de l'animation du hover
+//       biggerPoint(element.x, element.y);
+//       setInterval(function () {
+//         clearBiggerPoint();
+//       }, 1000);
+//     }
+//   });
+// });

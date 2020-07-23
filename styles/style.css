@@ -60,13 +60,14 @@ button:focus {
 } */
 
 #game-board {
-  padding: 20px 0px;
+  /* padding: 20px 0px; */
 }
 
 #game-board {
   position: relative;
   cursor: url("https://images.emojiterra.com/mozilla/512px/270f.png"), auto;
   /*cursor: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/9632/meh.png"), auto;*/
+  /* margin: 0px 60px; */
 }
 
 #game-board canvas {
@@ -83,7 +84,8 @@ button:focus {
 }
 
 .btn {
-  margin-top: 25px position: relative;
+  margin-top: 25px;
+  position: relative;
   display: inline-block;
   width: 248px;
   height: 50px;
@@ -131,4 +133,30 @@ button:focus {
   stroke-width: 4;
   stroke-dasharray: 196, 543;
   stroke-dashoffset: 437;
+}
+
+#btn-info {
+  font-family: "Shadows Into Light", cursive;
+  font-size: 20px;
+  background-color: #3e3e3e;
+  color: #fff;
+  padding: 10px 10px;
+  border: 0;
+  border-radius: 5px;
+  margin-top: 20px;
+  transition-duration: 0.2s;
+}
+
+#btn-info:hover {
+  background-color: #f8967a;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+#btn-info:focus {
+  outline: none;
+}
+
+#btn-info a {
+  color: white;
 }
