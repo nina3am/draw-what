@@ -248,26 +248,41 @@ function anim() {
 const startButton = document.getElementById("start-button");
 if (startButton) {
   startButton.addEventListener("click", (event) => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    rdmNumber = Math.random() * 2
-    draw = new DrawingCanvas(
-      drawings.name,
-      drawings.emoji,
-      drawings.img,
-      drawings.imgBackground,
-      drawings.frontImg,
-      drawings.time,
-      drawings.errorsLeft,
-      drawings.sound,
-      drawings.info,
-      drawings.points
-    ); // girafe
-    anim();
-    checkTimer();
-    gameIntroText.innerHTML = "First step : find the number 1";
+    startGame();
   });
 }
 
+const tryAgainButton = document.getElementById("try-again");
+if (tryAgainButton) {
+  tryAgainButton.addEventListener("click", (event) => {
+    startGame();
+  });
+}
+
+function startGame() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  rdmNumber = Math.random() * 2
+  draw = new DrawingCanvas(
+    drawings.name,
+    drawings.emoji,
+    drawings.img,
+    drawings.imgBackground,
+    drawings.frontImg,
+    drawings.time,
+    drawings.errorsLeft,
+    drawings.sound,
+    drawings.info,
+    drawings.points
+  );
+  currentPoint = 0; // index du point
+  currentNumberPoint; // numéro du point
+  followingNumberPoint = 1; // numéro précédent
+  mouseLineStartNumber = 0; // point de départ de la souris
+  gameIntroText.innerHTML = "First step : find the number 1";
+  goodToKnow.innerText = " ";
+  anim();
+  checkTimer();
+}
 
 // // Vérification du clic sur les points
 //function checkClickPoints() {}

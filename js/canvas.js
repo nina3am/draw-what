@@ -53,6 +53,8 @@ class DrawingCanvas {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "30px Shadows Into Light";
         ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 2);
+        document.getElementById('start-button').id = "try-again"
+        document.querySelector('#try-again span').innerText = "Try Again"
     }
     winner() {
         // on définie une fonction qui permettra d'afficher l'image associé pour révéler le dessin quand tous les points sont rattachés.
@@ -70,5 +72,7 @@ class DrawingCanvas {
         setTimeout(function () {
             audio.pause();
         }, 3000);
+        document.getElementById('start-button').id = "try-again"
+        document.querySelector('#try-again span').innerText = "Try Again"
     }
 }
