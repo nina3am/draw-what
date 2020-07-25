@@ -36,11 +36,7 @@ class DrawingCanvas {
     drawPoints(points) {
         // On passe un array en paramètre
         points.forEach((element, index) => {
-            //ctx.fillRect(element.x, element.y, 10, 10);
             element.draw();
-            // ctx.beginPath();
-            // ctx.arc(element.x, element.y, 3, 0, Math.PI * 2);
-            // ctx.fill();
         });
 
         // Un dessin est constitué d'un ensemble de points --> envoyé sous forme d'objet ou de tableau en paramètre ?
@@ -65,7 +61,7 @@ class DrawingCanvas {
         ctx.drawImage(this.img, 0, 0);
         ctx.drawImage(this.frontImg, 0, 0);
         gameIntroText.innerHTML =
-            "Congratulations, you found the " + this.name + this.emoji;
+            "Congratulations, you found the " + this.name + " " + this.emoji;
         var audio = new Audio(this.sound);
         goodToKnow.innerHTML = this.info;
         audio.play();

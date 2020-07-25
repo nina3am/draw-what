@@ -51,8 +51,16 @@ class Point {
 // // but will look sharper on high-DPI devices!
 // const ctx = setupCanvas($canvas);
 
+document.addEventListener('DOMContentLoaded', (event) => {
+  const image = new Image()
+  image.src = "/images/crayon.png"
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, 0, 0);
+  console.log('coucou')
+});
 
-const drawings = {
+
+const drawings = [{
   name: "girafe",
   emoji: "🦒",
   img: "/images/girafe.png",
@@ -223,7 +231,242 @@ const drawings = {
       y: 355,
     },
   ],
-};
+}, {
+  name: "elephant",
+  emoji: "🐘",
+  img: "/images/elephant.png",
+  imgBackground: "/images/fond-arriere-elephant.png",
+  frontImg: "/images/fond-avant-elephant.png",
+  time: 75,
+  errorsLeft: 5,
+  sound: "/sons/elephant-2.mp3",
+  info: "💡Did you the baby elephant sucks his trunk to feel better, like babies</br> <button id=\"btn-info\"><a href=\"https://secouchermoinsbete.fr/70738-les-elephanteaux-sucent-leur-trompe\" target=\"_blank\">See more here<a> </button>",
+  points: [{
+      x: 344,
+      y: 678,
+    },
+    {
+      x: 308,
+      y: 682,
+    },
+    {
+      x: 255,
+      y: 671,
+    },
+    {
+      x: 257,
+      y: 643,
+    },
+    {
+      x: 222,
+      y: 607,
+    },
+    {
+      x: 207,
+      y: 545,
+    },
+    {
+      x: 208,
+      y: 500,
+    },
+    {
+      x: 173,
+      y: 499,
+    },
+    {
+      x: 177,
+      y: 479,
+    },
+    {
+      x: 152,
+      y: 485,
+    },
+    {
+      x: 125,
+      y: 556,
+    },
+    {
+      x: 114,
+      y: 592,
+    },
+    {
+      x: 140,
+      y: 588,
+    },
+    {
+      x: 167,
+      y: 604,
+    },
+    {
+      x: 148,
+      y: 636,
+    },
+    {
+      x: 102,
+      y: 644,
+    },
+    {
+      x: 77,
+      y: 631,
+    },
+    {
+      x: 71,
+      y: 533,
+    },
+    {
+      x: 85,
+      y: 570,
+    },
+    {
+      x: 66,
+      y: 455,
+    },
+    {
+      x: 87,
+      y: 448,
+    },
+    {
+      x: 61,
+      y: 407,
+    },
+    {
+      x: 64,
+      y: 376,
+    },
+    {
+      x: 63,
+      y: 340,
+    },
+    {
+      x: 57,
+      y: 314,
+    },
+    {
+      x: 66,
+      y: 240,
+    },
+    {
+      x: 90,
+      y: 246,
+    },
+    {
+      x: 124,
+      y: 241,
+    },
+    {
+      x: 149,
+      y: 242,
+    },
+    {
+      x: 189,
+      y: 233,
+    },
+    {
+      x: 229,
+      y: 246,
+    },
+    {
+      x: 259,
+      y: 261,
+    },
+    {
+      x: 355,
+      y: 255,
+    },
+    {
+      x: 306,
+      y: 251,
+    },
+    {
+      x: 345,
+      y: 272,
+    },
+    {
+      x: 387,
+      y: 281,
+    },
+    {
+      x: 427,
+      y: 286,
+    },
+    {
+      x: 468,
+      y: 298,
+    },
+    {
+      x: 503,
+      y: 319,
+    },
+    {
+      x: 528,
+      y: 347,
+    },
+    {
+      x: 543,
+      y: 383,
+    },
+    {
+      x: 541,
+      y: 425,
+    },
+    {
+      x: 568,
+      y: 477,
+    },
+    {
+      x: 544,
+      y: 476,
+    },
+    {
+      x: 525,
+      y: 461,
+    },
+    {
+      x: 518,
+      y: 496,
+    },
+    {
+      x: 513,
+      y: 539,
+    },
+    {
+      x: 515,
+      y: 587,
+    },
+    {
+      x: 519,
+      y: 620,
+    },
+    {
+      x: 506,
+      y: 648,
+    },
+    {
+      x: 461,
+      y: 659,
+    },
+    {
+      x: 420,
+      y: 652,
+    },
+    {
+      x: 400,
+      y: 577,
+    },
+    {
+      x: 394,
+      y: 621,
+    },
+    {
+      x: 391,
+      y: 638,
+    },
+    {
+      x: 356,
+      y: 643,
+    },
+  ]
+}, ];
 //     {
 //         name: kangourou,
 //         img : '/images/girafe.png',
@@ -249,6 +492,8 @@ const startButton = document.getElementById("start-button");
 if (startButton) {
   startButton.addEventListener("click", (event) => {
     startGame();
+    document.getElementById('start-button').id = "try-again"
+    document.querySelector('#try-again span').innerText = "Try Again"
   });
 }
 
@@ -256,23 +501,27 @@ const tryAgainButton = document.getElementById("try-again");
 if (tryAgainButton) {
   tryAgainButton.addEventListener("click", (event) => {
     startGame();
+    document.getElementById('try-again').id = "start-button"
+    document.querySelector('#try-again span').innerText = "Start drawing"
   });
 }
 
 function startGame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  rdmNumber = Math.random() * 2
+  rdmNumber = Math.floor(Math.random() * 2)
+  console.log(rdmNumber)
+  console.log(draw)
   draw = new DrawingCanvas(
-    drawings.name,
-    drawings.emoji,
-    drawings.img,
-    drawings.imgBackground,
-    drawings.frontImg,
-    drawings.time,
-    drawings.errorsLeft,
-    drawings.sound,
-    drawings.info,
-    drawings.points
+    drawings[rdmNumber].name,
+    drawings[rdmNumber].emoji,
+    drawings[rdmNumber].img,
+    drawings[rdmNumber].imgBackground,
+    drawings[rdmNumber].frontImg,
+    drawings[rdmNumber].time,
+    drawings[rdmNumber].errorsLeft,
+    drawings[rdmNumber].sound,
+    drawings[rdmNumber].info,
+    drawings[rdmNumber].points
   );
   currentPoint = 0; // index du point
   currentNumberPoint; // numéro du point
@@ -287,6 +536,7 @@ function startGame() {
 // // Vérification du clic sur les points
 //function checkClickPoints() {}
 canvas.addEventListener("click", (event) => {
+  if (!draw) return
   // currentPoint = [event.clientX, event.clientY]
   const array = draw.points;
   const rect = canvas.getBoundingClientRect();
@@ -440,3 +690,10 @@ canvas.addEventListener('mousemove', function (evt) {
     }
   });
 });
+
+// const body = document.getElementsByTagName('body')
+// body.addEventListener('onload', function (evt) {
+//   console.log('coucou')
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+//   ctx.drawImage(this.background, 0, 0);
+// });
