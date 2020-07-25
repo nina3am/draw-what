@@ -1,14 +1,35 @@
 const $canvas = document.getElementById("game-board");
 const ctx = canvas.getContext("2d");
 let draw;
-let currentPoint = 0;
-let currentNumberPoint;
-let followingNumberPoint = 1;
-let previousNumberPoint;
+let currentPoint = 0; // index du point
+let currentNumberPoint; // numéro du point
+let followingNumberPoint = 1; // numéro précédent
+let mouseLineStartNumber = 0; // point de départ de la souris
 let gameIntroText = document.querySelector("#instructions");
 let goodToKnow = document.querySelector("#goodtoknow");
 let int;
+let arret;
+let mousePosition = {
+  x: 0,
+  y: 0,
+}
 
+class Point {
+  constructor(index, x, y) {
+    this.index = index,
+      this.x = x,
+      this.y = y,
+      this.radius = 3;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = "15px Roboto";
+    ctx.fillStyle = "#3e3e3e";
+    ctx.fillText(`${this.index + 1}`, this.x + 2, this.y - 5);
+  }
+}
 // function setupCanvas(canvas) {
 //   // Get the device pixel ratio, falling back to 1.
 //   // var dpr = window.devicePixelRatio || 1;
@@ -216,10 +237,11 @@ function anim() {
   // tracer toustes les lignes
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   draw.drawPoints(draw.points);
-  printTimer();
-  displaynumberErrors(draw.errorsLeft);
   drawAllLines(currentPoint);
-  requestAnimationFrame(anim)
+  drawMouseLines();
+  displaynumberErrors(draw.errorsLeft);
+  printTimer();
+  arret = requestAnimationFrame(anim)
 }
 
 // création du board de dessin
@@ -227,6 +249,7 @@ const startButton = document.getElementById("start-button");
 if (startButton) {
   startButton.addEventListener("click", (event) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    rdmNumber = Math.random() * 2
     draw = new DrawingCanvas(
       drawings.name,
       drawings.emoji,
@@ -254,7 +277,7 @@ canvas.addEventListener("click", (event) => {
   const rect = canvas.getBoundingClientRect();
   const xClickedPoint = event.clientX - rect.left;
   const yClickedPoint = event.clientY - rect.top;
-  console.log("x: " + xClickedPoint + " y: " + yClickedPoint);
+  //console.log("x: " + xClickedPoint + " y: " + yClickedPoint);
   array.forEach((element, index) => {
     // x doit être compris entre 5 de + et 5 de moins par rapport au x cliqué et y également
     if (
@@ -267,31 +290,25 @@ canvas.addEventListener("click", (event) => {
       element.x > xClickedPoint - 5 &&
       element.y < yClickedPoint + 5
     ) {
-      console.log("coordinate ok");
+      //console.log("coordinate ok");
       currentNumberPoint = index + 1;
       currentPoint++;
-      previousNumberPoint = index - 1;
       // si le numéro est le premier alors on affiche l'instruction mais aucun trait ne se dessine
       if (element.x === array[0].x && element.y === array[0].y) {
-        console.log("first element");
+        //console.log("first element");
         followingNumberPoint++;
         gameIntroText.innerHTML = "Next step : Find the number 2";
         // lorsque j'arrive au dernier point alors c'est gagné et j'affiche mon dessin
         // TODO : gérer la fermeture de ma forme -> clic sur le 1 ? ou fillForm ?
       } else if (currentNumberPoint === 7) {
-        console.log("last element");
+        //console.log("last element");
         draw.winner();
-
         // si le numéro du point cliqué correspond aux numéros suivants à trouver alors on trace la ligne
       } else if (followingNumberPoint === currentNumberPoint) {
         followingNumberPoint++;
-        console.log("now find number " + followingNumberPoint);
-        drawLines(
-          element.x,
-          element.y,
-          array[previousNumberPoint].x,
-          array[previousNumberPoint].y
-        );
+        mouseLineStartNumber++;
+        //console.log("now find number " + followingNumberPoint);
+        draw.points[index].line = true;
         //sinon décrémenter le compteur d 'erreurs et mettre à jour l'affichage
       } else {
         draw.errorsLeft--;
@@ -327,14 +344,14 @@ function displaynumberErrors(errors) {
 }
 
 function printTimer() {
+  ctx.clearRect((canvas.width - 220), 0, 300, 40);
   ctx.font = "20px Roboto";
   ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 220), 30);
-  setInterval(() => {
-    //console.log(draw.time);
-    ctx.clearRect((canvas.width - 220), 0, 300, 40);
-    ctx.font = "20px Roboto";
-    ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 220), 30);
-  }, 1000);
+  // setInterval(() => {
+  //   ctx.clearRect((canvas.width - 220), 0, 300, 40);
+  //   ctx.font = "20px Roboto";
+  //   ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 220), 30);
+  // }, 1000);
 }
 
 function checkTimer() {
@@ -343,6 +360,8 @@ function checkTimer() {
     if (draw.time === 0) {
       draw.gameOver();
       stopTimer();
+      ctx.clearRect((canvas.width - 220), 0, 300, 40);
+
     }
   }, 1000);
 }
@@ -351,15 +370,12 @@ function stopTimer() {
   clearInterval(int);
 }
 
-function biggerPoint(x, y) {
-  ctx.beginPath();
-  ctx.arc(x, y, 10, 0, Math.PI * 2);
-  ctx.fill();
+function biggerPoint(point) {
+  point.radius = 7;
 }
 
-function clearBiggerPoint() {
-  ctx.clearRect(0, 50, canvas.width, (canvas.height));
-  draw.drawPoints(drawings.points);
+function clearBiggerPoint(point) {
+  point.radius = 3;
 }
 
 function getMousePos(canvas, evt) {
@@ -370,55 +386,42 @@ function getMousePos(canvas, evt) {
   };
 }
 
-//TODO: draw line existante
+//TODO: dessine toutes les lignes
 function drawAllLines(currentPoint) {
-  console.log('coucou')
-  const array = draw.points;
-  array.forEach((element, index) => {
-    if (index <= currentPoint) {
-      const nextElement = array[index + 1];
-      drawLines(element.x, element.y, nextElement.x, nextElement.y)
+  draw.points.forEach((element, index) => {
+    const prevPoint = index - 1
+    if (draw.points[index].line === true) {
+      drawLines(element.x, element.y, draw.points[prevPoint].x, draw.points[prevPoint].y)
     }
   })
 }
 
-class Point {
-  constructor(x, y) {
-    this.x = x,
-    this.y = y,
-    this.radius = 10;
+function drawMouseLines() {
+  if (currentPoint != 0) {
+    drawLines(draw.points[mouseLineStartNumber].x, draw.points[mouseLineStartNumber].y, mousePosition.x, mousePosition.y);
   }
-   draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fill();
-   }
 }
-// new Point()
 
 canvas.addEventListener('mousemove', function (evt) {
   if (!draw) return
-
   var mousePos = getMousePos(canvas, evt);
-  // var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-  const array = draw.points;
-  array.forEach((element, index) => {
+  mousePosition.x = mousePos.x;
+  mousePosition.y = mousePos.y;
+  // const array = draw.points;
+  draw.points.forEach((element, index) => {
     if (
-      element.x > mousePos.x - 20 &&
-      element.y > mousePos.y - 20 &&
-      element.x < mousePos.x + 20 &&
-      element.y > mousePos.y - 20 &&
-      element.x < mousePos.x + 20 &&
-      element.y < mousePos.y + 20 &&
-      element.x > mousePos.x - 20 &&
-      element.y < mousePos.y + 20
+      element.x > mousePos.x - 5 &&
+      element.y > mousePos.y - 5 &&
+      element.x < mousePos.x + 5 &&
+      element.y > mousePos.y - 5 &&
+      element.x < mousePos.x + 5 &&
+      element.y < mousePos.y + 5 &&
+      element.x > mousePos.x - 5 &&
+      element.y < mousePos.y + 5
     ) {
-      // TODO : améliorer l'affichage de l'animation du hover
-      biggerPoint(element.x, element.y);
-      setInterval(function () {
-        clearBiggerPoint();
-        drawLines(currentPoint);
-      }, 1000);
+      biggerPoint(element);
+    } else {
+      clearBiggerPoint(element);
     }
   });
 });
