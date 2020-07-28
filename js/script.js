@@ -223,7 +223,7 @@ const drawings = [{
   imgBackground: "/images/fond-arriere-elephant.png",
   frontImg: "/images/fond-avant-elephant.png",
   imgEnd: "/images/game-over",
-  time: 75,
+  time: 120,
   errorsLeft: 5,
   sound: "/sons/elephant-2.mp3",
   endSound: "/sons/oups.mp3",
@@ -297,12 +297,12 @@ const drawings = [{
       y: 631,
     },
     {
-      x: 71,
-      y: 533,
-    },
-    {
       x: 85,
       y: 570,
+    },
+    {
+      x: 71,
+      y: 533,
     },
     {
       x: 66,
@@ -357,12 +357,12 @@ const drawings = [{
       y: 261,
     },
     {
-      x: 355,
-      y: 255,
-    },
-    {
       x: 306,
       y: 251,
+    },
+    {
+      x: 367,
+      y: 258,
     },
     {
       x: 345,
@@ -545,7 +545,7 @@ canvas.addEventListener("click", (event) => {
         gameIntroText.innerHTML = "Next step : Find the number 2";
         // lorsque j'arrive au dernier point alors c'est gagné et j'affiche mon dessin
         // TODO : gérer la fermeture de ma forme -> clic sur le 1 ? ou fillForm ?
-      } else if (currentNumberPoint === 7) {
+      } else if (currentNumberPoint === array.length) {
         //console.log("last element");
         draw.winner();
         // si le numéro du point cliqué correspond aux numéros suivants à trouver alors on trace la ligne
