@@ -63,12 +63,11 @@ button:focus {
 #game-board {
   position: relative;
   /* margin: 0px 60px; */
+  display: flex;
 }
 
 #game-board canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
+  margin: auto;
 }
 
 .container {

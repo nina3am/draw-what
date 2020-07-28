@@ -5,9 +5,11 @@ class DrawingCanvas {
         img,
         imgBackground,
         frontImg,
+        imgEnd,
         time,
         errorsLeft,
         sound,
+        endSound,
         info,
         points
     ) {
@@ -20,11 +22,14 @@ class DrawingCanvas {
         this.background.src = imgBackground;
         this.frontImg = new Image();
         this.frontImg.src = frontImg;
+        this.imgEnd = new Image();
+        this.imgEnd.src = imgEnd;
         // this.time = temps défini pour résoudre le dessin
         this.time = time;
         // this.errorLeft = nombre d'erreurs possibles pour ce dessin
         this.info = info;
         this.sound = sound;
+        this.endSound = endSound;
         this.errorsLeft = errorsLeft;
         this.currentPoint = 0;
         this.points = [];
@@ -47,9 +52,15 @@ class DrawingCanvas {
         cancelAnimationFrame(arret);
         stopTimer();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = "30px Shadows Into Light";
-        ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 2);
-        document.getElementById('start-button').id = "try-again"
+        ctx.drawImage(this.imgEnd, 0, 0)
+        ctx.font = "50px Roboto";
+        ctx.fillText(`Game Over`, canvas.width / 2, canvas.height / 3);
+        var audio = new Audio(this.endSound);
+        audio.play();
+        setTimeout(function () {
+            audio.pause();
+        }, 3000);
+        startButton.id = "try-again"
         document.querySelector('#try-again span').innerText = "Try Again"
     }
     winner() {
@@ -68,7 +79,7 @@ class DrawingCanvas {
         setTimeout(function () {
             audio.pause();
         }, 3000);
-        document.getElementById('start-button').id = "try-again"
+        startButton.id = "try-again"
         document.querySelector('#try-again span').innerText = "Try Again"
     }
 }

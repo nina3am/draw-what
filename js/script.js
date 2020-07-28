@@ -7,6 +7,8 @@ let followingNumberPoint = 1; // numéro précédent
 let mouseLineStartNumber = 0; // point de départ de la souris
 let gameIntroText = document.querySelector("#instructions");
 let goodToKnow = document.querySelector("#goodtoknow");
+let startButton = document.getElementById("start-button")
+let tryAgainButton = document.getElementById("try-again")
 let int;
 let arret;
 let mousePosition = {
@@ -27,36 +29,17 @@ class Point {
     ctx.fill();
     ctx.font = "15px Roboto";
     ctx.fillStyle = "#3e3e3e";
-    ctx.fillText(`${this.index + 1}`, this.x + 2, this.y - 5);
+    ctx.fillText(`${this.index + 1}`, this.x + 1, this.y - 5);
   }
 }
-// function setupCanvas(canvas) {
-//   // Get the device pixel ratio, falling back to 1.
-//   // var dpr = window.devicePixelRatio || 1;
-//   var dpr = 1;
-//   // Get the size of the canvas in CSS pixels.
-//   var rect = canvas.getBoundingClientRect();
-//   // Give the canvas pixel dimensions of their CSS
-//   // size * the device pixel ratio.
-//   canvas.width = rect.width * dpr;
-//   canvas.height = rect.height * dpr;
-//   // Scale all drawing operations by the dpr, so you
-//   // don't have to worry about the difference.
-//   context.scale(dpr, dpr);
-//   console.log(dpr)
-//   return context;
-// }
 
-// // Now this line will be the same size on the page
-// // but will look sharper on high-DPI devices!
-// const ctx = setupCanvas($canvas);
-
-document.addEventListener('DOMContentLoaded', (event) => {
-  const image = new Image()
-  image.src = "/images/crayon.png"
+const image = new Image()
+image.src = "/images/crayon-intro.png"
+window.addEventListener('load', (event) => {
+  const x = (canvas.width / 2 - image.width / 2);
+  const y = (canvas.height / 2 - image.height / 2);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(image, 0, 0);
-  console.log('coucou')
+  ctx.drawImage(image, x, y);
 });
 
 
@@ -66,9 +49,11 @@ const drawings = [{
   img: "/images/girafe.png",
   imgBackground: "/images/fond-arriere.png",
   frontImg: "/images/fond-avant.png",
+  imgEnd: "/images/game-over",
   time: 60,
   errorsLeft: 3,
   sound: "/sons/0879.mp3",
+  endSound: "/sons/oups.mp3",
   info: "💡Did you know the girafe doesn't make any sound ? </br> <button id=\"btn-info\"><a href=\"https://www.maxisciences.com/girafe/a-quoi-ressemble-le-cri-de-la-girafe-des-scientifiques-ont-trouve-la-reponse_art35980.html\" target=\"_blank\">See more here<a> </button>",
   points: [{
       x: 330, //1
@@ -179,7 +164,7 @@ const drawings = [{
       y: 695,
     },
     {
-      x: 468,
+      x: 460,
       y: 713,
     },
     {
@@ -211,12 +196,12 @@ const drawings = [{
       y: 709,
     },
     {
-      x: 233,
-      y: 641,
-    },
-    {
       x: 231,
       y: 740,
+    },
+    {
+      x: 233,
+      y: 641,
     },
     {
       x: 238,
@@ -237,10 +222,12 @@ const drawings = [{
   img: "/images/elephant.png",
   imgBackground: "/images/fond-arriere-elephant.png",
   frontImg: "/images/fond-avant-elephant.png",
+  imgEnd: "/images/game-over",
   time: 75,
   errorsLeft: 5,
   sound: "/sons/elephant-2.mp3",
-  info: "💡Did you the baby elephant sucks his trunk to feel better, like babies</br> <button id=\"btn-info\"><a href=\"https://secouchermoinsbete.fr/70738-les-elephanteaux-sucent-leur-trompe\" target=\"_blank\">See more here<a> </button>",
+  endSound: "/sons/oups.mp3",
+  info: "💡Did you the baby elephant sucks his trunk to feel better, </br> like a baby</br> <button id=\"btn-info\"><a href=\"https://secouchermoinsbete.fr/70738-les-elephanteaux-sucent-leur-trompe\" target=\"_blank\">See more here<a> </button>",
   points: [{
       x: 344,
       y: 678,
@@ -274,7 +261,7 @@ const drawings = [{
       y: 499,
     },
     {
-      x: 177,
+      x: 182,
       y: 479,
     },
     {
@@ -458,7 +445,7 @@ const drawings = [{
       y: 621,
     },
     {
-      x: 391,
+      x: 396,
       y: 638,
     },
     {
@@ -467,12 +454,6 @@ const drawings = [{
     },
   ]
 }, ];
-//     {
-//         name: kangourou,
-//         img : '/images/girafe.png',
-//         time : 30,
-//         errorsLeft : 3,
-//     }
 
 function anim() {
   // effacer le canvas
@@ -482,44 +463,43 @@ function anim() {
   draw.drawPoints(draw.points);
   drawAllLines(currentPoint);
   drawMouseLines();
+  drawPen();
   displaynumberErrors(draw.errorsLeft);
   printTimer();
   arret = requestAnimationFrame(anim)
 }
 
-// création du board de dessin
-const startButton = document.getElementById("start-button");
 if (startButton) {
   startButton.addEventListener("click", (event) => {
     startGame();
-    document.getElementById('start-button').id = "try-again"
+    startButton.id = "try-again"
     document.querySelector('#try-again span').innerText = "Try Again"
   });
 }
 
-const tryAgainButton = document.getElementById("try-again");
 if (tryAgainButton) {
   tryAgainButton.addEventListener("click", (event) => {
     startGame();
-    document.getElementById('try-again').id = "start-button"
+    tryAgainButton.id = "start-button"
     document.querySelector('#try-again span').innerText = "Start drawing"
   });
 }
 
 function startGame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stopTimer();
   rdmNumber = Math.floor(Math.random() * 2)
-  console.log(rdmNumber)
-  console.log(draw)
   draw = new DrawingCanvas(
     drawings[rdmNumber].name,
     drawings[rdmNumber].emoji,
     drawings[rdmNumber].img,
     drawings[rdmNumber].imgBackground,
     drawings[rdmNumber].frontImg,
+    drawings[rdmNumber].imgEnd,
     drawings[rdmNumber].time,
     drawings[rdmNumber].errorsLeft,
     drawings[rdmNumber].sound,
+    drawings[rdmNumber].endSound,
     drawings[rdmNumber].info,
     drawings[rdmNumber].points
   );
@@ -529,12 +509,12 @@ function startGame() {
   mouseLineStartNumber = 0; // point de départ de la souris
   gameIntroText.innerHTML = "First step : find the number 1";
   goodToKnow.innerText = " ";
+  drawings.time = 0;
   anim();
   checkTimer();
 }
 
 // // Vérification du clic sur les points
-//function checkClickPoints() {}
 canvas.addEventListener("click", (event) => {
   if (!draw) return
   // currentPoint = [event.clientX, event.clientY]
@@ -572,6 +552,7 @@ canvas.addEventListener("click", (event) => {
       } else if (followingNumberPoint === currentNumberPoint) {
         followingNumberPoint++;
         mouseLineStartNumber++;
+        gameIntroText.innerHTML = `Next step : Find the number ${index + 2}`;
         //console.log("now find number " + followingNumberPoint);
         draw.points[index].line = true;
         //sinon décrémenter le compteur d 'erreurs et mettre à jour l'affichage
@@ -584,7 +565,6 @@ canvas.addEventListener("click", (event) => {
   });
 });
 
-// Dessin de la ligne du point 1 au point 2, au suivi de la souris (en option)
 function drawLines(xFrom, yFrom, xTo, yTo) {
   ctx.beginPath();
   ctx.moveTo(xFrom, yFrom);
@@ -612,11 +592,6 @@ function printTimer() {
   ctx.clearRect((canvas.width - 220), 0, 300, 40);
   ctx.font = "20px Roboto";
   ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 220), 30);
-  // setInterval(() => {
-  //   ctx.clearRect((canvas.width - 220), 0, 300, 40);
-  //   ctx.font = "20px Roboto";
-  //   ctx.fillText(`Time left : ${draw.time} second(s)`, (canvas.width - 220), 30);
-  // }, 1000);
 }
 
 function checkTimer() {
@@ -635,14 +610,17 @@ function stopTimer() {
   clearInterval(int);
 }
 
+// Fait grossir le point
 function biggerPoint(point) {
   point.radius = 7;
 }
 
+// Fait diminuer la taille du point
 function clearBiggerPoint(point) {
   point.radius = 3;
 }
 
+// Donne la position de la souris sur le canvas
 function getMousePos(canvas, evt) {
   var rect = canvas.getBoundingClientRect();
   return {
@@ -651,7 +629,7 @@ function getMousePos(canvas, evt) {
   };
 }
 
-//TODO: dessine toutes les lignes
+// dessine toutes les lignes
 function drawAllLines(currentPoint) {
   draw.points.forEach((element, index) => {
     const prevPoint = index - 1
@@ -661,10 +639,21 @@ function drawAllLines(currentPoint) {
   })
 }
 
+//  Permet de dessiner la ligne au mouseover
 function drawMouseLines() {
   if (currentPoint != 0) {
     drawLines(draw.points[mouseLineStartNumber].x, draw.points[mouseLineStartNumber].y, mousePosition.x, mousePosition.y);
   }
+}
+
+const pen = new Image()
+pen.src = "/images/crayon.png"
+
+// Permet d'afficher le crayon
+function drawPen() {
+  const x = mousePosition.x - (pen.width / 0, 5)
+  const y = mousePosition.y - (pen.height)
+  ctx.drawImage(pen, x, y)
 }
 
 canvas.addEventListener('mousemove', function (evt) {
@@ -690,10 +679,3 @@ canvas.addEventListener('mousemove', function (evt) {
     }
   });
 });
-
-// const body = document.getElementsByTagName('body')
-// body.addEventListener('onload', function (evt) {
-//   console.log('coucou')
-//   ctx.clearRect(0, 0, canvas.width, canvas.height);
-//   ctx.drawImage(this.background, 0, 0);
-// });
