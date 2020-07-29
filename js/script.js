@@ -34,7 +34,7 @@ class Point {
 }
 
 const image = new Image()
-image.src = "/images/crayon-intro.png"
+image.src = "images/crayon-intro.png"
 window.addEventListener('load', (event) => {
   const x = (canvas.width / 2 - image.width / 2);
   const y = (canvas.height / 2 - image.height / 2);
@@ -46,10 +46,10 @@ window.addEventListener('load', (event) => {
 const drawings = [{
   name: "girafe",
   emoji: "🦒",
-  img: "/images/girafe.png",
-  imgBackground: "/images/fond-arriere.png",
-  frontImg: "/images/fond-avant.png",
-  imgEnd: "/images/game-over",
+  img: "images/girafe.png",
+  imgBackground: "images/fond-arriere.png",
+  frontImg: "images/fond-avant.png",
+  imgEnd: "images/game-over",
   time: 60,
   errorsLeft: 3,
   sound: "/sons/0879.mp3",
@@ -219,10 +219,10 @@ const drawings = [{
 }, {
   name: "elephant",
   emoji: "🐘",
-  img: "/images/elephant.png",
-  imgBackground: "/images/fond-arriere-elephant.png",
-  frontImg: "/images/fond-avant-elephant.png",
-  imgEnd: "/images/game-over",
+  img: "images/elephant.png",
+  imgBackground: "images/fond-arriere-elephant.png",
+  frontImg: "images/fond-avant-elephant.png",
+  imgEnd: "images/game-over",
   time: 120,
   errorsLeft: 5,
   sound: "/sons/elephant-2.mp3",
@@ -647,7 +647,7 @@ function drawMouseLines() {
 }
 
 const pen = new Image()
-pen.src = "/images/crayon.png"
+pen.src = "images/crayon.png"
 
 // Permet d'afficher le crayon
 function drawPen() {
