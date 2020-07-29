@@ -52,8 +52,8 @@ const drawings = [{
   imgEnd: "images/game-over",
   time: 60,
   errorsLeft: 3,
-  sound: "/sons/0879.mp3",
-  endSound: "/sons/oups.mp3",
+  sound: "sons/0879.mp3",
+  endSound: "sons/oups.mp3",
   info: "💡Did you know the girafe doesn't make any sound ? </br> <button id=\"btn-info\"><a href=\"https://www.maxisciences.com/girafe/a-quoi-ressemble-le-cri-de-la-girafe-des-scientifiques-ont-trouve-la-reponse_art35980.html\" target=\"_blank\">See more here<a> </button>",
   points: [{
       x: 330, //1
@@ -225,8 +225,8 @@ const drawings = [{
   imgEnd: "images/game-over",
   time: 120,
   errorsLeft: 5,
-  sound: "/sons/elephant-2.mp3",
-  endSound: "/sons/oups.mp3",
+  sound: "sons/elephant-2.mp3",
+  endSound: "sons/oups.mp3",
   info: "💡Did you the baby elephant sucks his trunk to feel better, </br> like a baby</br> <button id=\"btn-info\"><a href=\"https://secouchermoinsbete.fr/70738-les-elephanteaux-sucent-leur-trompe\" target=\"_blank\">See more here<a> </button>",
   points: [{
       x: 344,
