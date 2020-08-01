@@ -227,7 +227,7 @@ const drawings = [{
   errorsLeft: 5,
   sound: "sons/elephant-2.mp3",
   endSound: "sons/oups.mp3",
-  info: "💡Did you the baby elephant sucks his trunk to feel better, </br> like a baby</br> <button id=\"btn-info\"><a href=\"https://secouchermoinsbete.fr/70738-les-elephanteaux-sucent-leur-trompe\" target=\"_blank\">See more here<a> </button>",
+  info: "💡Did you know the baby elephant sucks his trunk to feel better, </br> like a baby</br> <button id=\"btn-info\"><a href=\"https://secouchermoinsbete.fr/70738-les-elephanteaux-sucent-leur-trompe\" target=\"_blank\">See more here<a> </button>",
   points: [{
       x: 344,
       y: 678,
